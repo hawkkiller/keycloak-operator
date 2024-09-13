@@ -54,10 +54,6 @@ helm package "$CHART_DIR" --destination .
 echo "Switching to the $GH_PAGES_BRANCH branch..."
 git checkout "$GH_PAGES_BRANCH"
 
-# Move the packaged chart to the current directory
-echo "Moving the packaged chart to the $GH_PAGES_BRANCH branch..."
-mv "$CHART_NAME-$VERSION.tgz" .
-
 # Update the Helm repo index
 echo "Updating the Helm repo index..."
 helm repo index . --url "$HELM_REPO_URL"
