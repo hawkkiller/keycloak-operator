@@ -1,0 +1,6 @@
+apiVersion: v2
+name: keycloak-operator
+description: A Helm chart for installing the Keycloak Operator
+type: application
+version: 0.1.0
+appVersion: "25.0.5"  # Replace with the desired Keycloak Operator version

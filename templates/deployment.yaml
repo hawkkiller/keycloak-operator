@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "keycloak-operator.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+{{ include "keycloak-operator.labels" . | nindent 4 }}
+  annotations:
+{{ include "keycloak-operator.annotations" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "keycloak-operator.name" . }}
+  template:
+    metadata:
+      labels:
+{{ include "keycloak-operator.labels" . | nindent 8 }}
+      annotations:
+{{ include "keycloak-operator.annotations" . | indent 8 }}
+    spec:
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      containers:
+        - name: keycloak-operator
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.targetPort }}
+              protocol: TCP
+          env:
+            - name: KUBERNETES_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: {{ .Values.env.KUBERNETES_NAMESPACE.fieldRef.fieldPath }}
+            - name: RELATED_IMAGE_KEYCLOAK
+              value: {{ .Values.env.RELATED_IMAGE_KEYCLOAK }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.probes.livenessProbe.httpGet.path }}
+              port: {{ .Values.probes.livenessProbe.httpGet.port }}
+            initialDelaySeconds: {{ .Values.probes.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.probes.livenessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.probes.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.probes.livenessProbe.failureThreshold }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.probes.readinessProbe.httpGet.path }}
+              port: {{ .Values.probes.readinessProbe.httpGet.port }}
+            initialDelaySeconds: {{ .Values.probes.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.probes.readinessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.probes.readinessProbe.successThreshold }}
+            failureThreshold: {{ .Values.probes.readinessProbe.failureThreshold }}
+          startupProbe:
+            httpGet:
+              path: {{ .Values.probes.startupProbe.httpGet.path }}
+              port: {{ .Values.probes.startupProbe.httpGet.port }}
+            initialDelaySeconds: {{ .Values.probes.startupProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.startupProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.probes.startupProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.probes.startupProbe.successThreshold }}
+            failureThreshold: {{ .Values.probes.startupProbe.failureThreshold }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
