@@ -30,7 +30,6 @@ replicaCount: 1                                    # The number of Keycloak Oper
 # Common labels to apply to all resources.
 labels:
   app.kubernetes.io/name: keycloak-operator        # The name of the application.
-  app.kubernetes.io/version: "{{ .Chart.appVersion }}"  # The version of the application (from Chart.yaml).
   app.kubernetes.io/managed-by: quarkus            # The tool being used to manage the operation of an application.
 
 # Annotations to add to all resources.
