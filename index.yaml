@@ -3,22 +3,22 @@ entries:
   keycloak-operator:
   - apiVersion: v2
     appVersion: 25.0.5
-    created: "2024-09-13T18:13:09.347654+02:00"
+    created: "2024-09-13T18:33:08.460927+02:00"
     description: A Helm chart for installing the Keycloak Operator
-    digest: ef9f7bb40beab27e8845f29cde4d92893ffba420bf77fd6e3d0b1a705307e2f9
+    digest: 0b749771b3a3a4e635f15fbf93f276c719f1015d1a25701d30980885adf63027
     name: keycloak-operator
     type: application
     urls:
-    - https://your-github-username.github.io/your-repo-name/keycloak-operator-1.0.1.tgz
+    - keycloak-operator-1.0.1.tgz
     version: 1.0.1
   - apiVersion: v2
     appVersion: 25.0.5
-    created: "2024-09-13T18:13:09.346958+02:00"
+    created: "2024-09-13T18:33:08.459892+02:00"
     description: A Helm chart for installing the Keycloak Operator
     digest: 8a7f47a5da34300305e032cfb7015f4eb86e215dc42a5c199bf42fb64980ffa5
     name: keycloak-operator
     type: application
     urls:
-    - https://your-github-username.github.io/your-repo-name/keycloak-operator-0.1.0.tgz
+    - keycloak-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2024-09-13T18:13:09.345156+02:00"
+generated: "2024-09-13T18:33:08.458259+02:00"
