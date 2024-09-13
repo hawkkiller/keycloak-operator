@@ -1,65 +1,88 @@
-# values.yaml
+# Default values for the Keycloak Operator Helm chart.
 
+# The image settings for the Keycloak Operator.
 image:
-  repository: quay.io/keycloak/keycloak-operator
-  tag: "25.0.5"
-  pullPolicy: Always
+  repository: quay.io/keycloak/keycloak-operator   # The Docker image repository for the Keycloak Operator.
+  tag: "25.0.5"                                    # The specific tag or version of the Keycloak Operator image.
+  pullPolicy: Always                               # The Kubernetes image pull policy (Always, IfNotPresent, or Never).
 
+# Service account configuration.
 serviceAccount:
-  create: true
-  name: keycloak-operator
+  create: true                                     # Specifies whether a service account should be created.
+  name: keycloak-operator                          # The name of the service account to use. If not set and create is true, a name is generated.
 
+# RBAC (Role-Based Access Control) settings.
 rbac:
-  create: true
+  create: true                                     # Specifies whether RBAC resources should be created.
 
-resources: {}
+# Resource requests and limits for the Keycloak Operator container.
+resources:                                         # Kubernetes resource requests and limits for the container.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
 
-replicaCount: 1
+# Number of replicas for the Keycloak Operator Deployment.
+replicaCount: 1                                    # The number of Keycloak Operator replicas to deploy.
 
-labels: {}
+# Common labels to apply to all resources.
+labels:
+  app.kubernetes.io/name: keycloak-operator        # The name of the application.
+  app.kubernetes.io/version: "{{ .Chart.appVersion }}"  # The version of the application (from Chart.yaml).
+  app.kubernetes.io/managed-by: quarkus            # The tool being used to manage the operation of an application.
 
-annotations: {}
+# Annotations to add to all resources.
+annotations:
+  app.quarkus.io/quarkus-version: "3.8.5"          # The version of Quarkus used to build the application.
+  app.quarkus.io/vcs-uri: "https://github.com/keycloak/keycloak.git"  # The VCS URI of the application source code.
+  app.quarkus.io/build-timestamp: "2024-09-10 - 05:23:02 +0000"       # The timestamp when the application was built.
 
+# Service configuration for the Keycloak Operator's metrics or health endpoints.
 service:
-  type: ClusterIP
-  port: 80
-  targetPort: 8080
+  type: ClusterIP                                  # The type of Kubernetes Service (ClusterIP, NodePort, LoadBalancer).
+  port: 80                                         # The port that the service will expose.
+  targetPort: 8080                                 # The port on the container to forward traffic to.
 
+# Environment variables to set in the Keycloak Operator container.
 env:
   KUBERNETES_NAMESPACE:
     fieldRef:
-      fieldPath: metadata.namespace
-  RELATED_IMAGE_KEYCLOAK: "quay.io/keycloak/keycloak:25.0.5"
+      fieldPath: metadata.namespace                # References the namespace of the Pod.
+  RELATED_IMAGE_KEYCLOAK: "quay.io/keycloak/keycloak:25.0.5"  # Specifies the Keycloak image to be used by the operator.
 
+# Probe configurations for liveness, readiness, and startup checks.
 probes:
   livenessProbe:
     httpGet:
-      path: /q/health/live
-      port: http
-    initialDelaySeconds: 5
-    periodSeconds: 10
-    timeoutSeconds: 10
-    successThreshold: 1
-    failureThreshold: 3
+      path: /q/health/live                         # The HTTP path to check for liveness.
+      port: http                                   # The port to use for the liveness probe.
+    initialDelaySeconds: 5                         # Delay before the first probe is initiated.
+    periodSeconds: 10                              # How often to perform the probe.
+    timeoutSeconds: 10                             # Number of seconds after which the probe times out.
+    successThreshold: 1                            # Minimum consecutive successes for the probe to be considered successful.
+    failureThreshold: 3                            # When a probe fails, Kubernetes will try failureThreshold times before giving up.
 
   readinessProbe:
     httpGet:
-      path: /q/health/ready
-      port: http
-    initialDelaySeconds: 5
-    periodSeconds: 10
-    timeoutSeconds: 10
-    successThreshold: 1
-    failureThreshold: 3
+      path: /q/health/ready                        # The HTTP path to check for readiness.
+      port: http                                   # The port to use for the readiness probe.
+    initialDelaySeconds: 5                         # Delay before the first probe is initiated.
+    periodSeconds: 10                              # How often to perform the probe.
+    timeoutSeconds: 10                             # Number of seconds after which the probe times out.
+    successThreshold: 1                            # Minimum consecutive successes for the probe to be considered successful.
+    failureThreshold: 3                            # When a probe fails, Kubernetes will try failureThreshold times before giving up.
 
   startupProbe:
     httpGet:
-      path: /q/health/started
-      port: http
-    initialDelaySeconds: 5
-    periodSeconds: 10
-    timeoutSeconds: 10
-    successThreshold: 1
-    failureThreshold: 3
+      path: /q/health/started                      # The HTTP path to check for startup completion.
+      port: http                                   # The port to use for the startup probe.
+    initialDelaySeconds: 5                         # Delay before the first probe is initiated.
+    periodSeconds: 10                              # How often to perform the probe.
+    timeoutSeconds: 10                             # Number of seconds after which the probe times out.
+    successThreshold: 1                            # Minimum consecutive successes for the probe to be considered successful.
+    failureThreshold: 3                            # When a probe fails, Kubernetes will try failureThreshold times before giving up.
 
-namespace: keycloak
+# The namespace where the Keycloak Operator will be deployed.
+namespace: keycloak                                # The Kubernetes namespace to deploy the operator into.
