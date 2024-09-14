@@ -56,7 +56,7 @@ probes:
   livenessProbe:
     httpGet:
       path: /q/health/live                         # The HTTP path to check for liveness.
-      port: http                                   # The port to use for the liveness probe.
+      port: 8080                                   # The port to use for the liveness probe.
     initialDelaySeconds: 5                         # Delay before the first probe is initiated.
     periodSeconds: 10                              # How often to perform the probe.
     timeoutSeconds: 10                             # Number of seconds after which the probe times out.
@@ -66,7 +66,7 @@ probes:
   readinessProbe:
     httpGet:
       path: /q/health/ready                        # The HTTP path to check for readiness.
-      port: http                                   # The port to use for the readiness probe.
+      port: 8080                                   # The port to use for the readiness probe.
     initialDelaySeconds: 5                         # Delay before the first probe is initiated.
     periodSeconds: 10                              # How often to perform the probe.
     timeoutSeconds: 10                             # Number of seconds after which the probe times out.
@@ -76,7 +76,7 @@ probes:
   startupProbe:
     httpGet:
       path: /q/health/started                      # The HTTP path to check for startup completion.
-      port: http                                   # The port to use for the startup probe.
+      port: 8080                                   # The port to use for the startup probe.
     initialDelaySeconds: 5                         # Delay before the first probe is initiated.
     periodSeconds: 10                              # How often to perform the probe.
     timeoutSeconds: 10                             # Number of seconds after which the probe times out.
